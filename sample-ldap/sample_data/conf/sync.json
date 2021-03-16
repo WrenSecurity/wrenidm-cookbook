@@ -1,0 +1,45 @@
+{
+    "mappings": [
+        {
+            "name" : "managedUser_ldapAccount",
+            "source" : "managed/user",
+            "target" : "system/openldap/account",
+            "onCreate" : {
+                "type" : "text/javascript",
+                "source" : "target.dn = 'cn=' + source.userName + ',dc=wrensecurity,dc=org';"
+            },
+            "onUpdate" : {
+                "type" : "text/javascript",
+                "source" : "target.dn = 'cn=' + source.userName + ',dc=wrensecurity,dc=org';"
+            },
+            "properties": [
+                {
+                    "source": "userName",
+                    "target": "cn"
+                },
+                {
+                    "source": "sn",
+                    "target": "sn"
+                }
+            ],
+            "policies" : [
+                {
+                    "situation" : "UNQUALIFIED",
+                    "action" : "UPDATE"
+                },
+                {
+                    "situation" : "SOURCE_MISSING",
+                    "action" : "DELETE"
+                },
+                {
+                    "situation" : "ABSENT",
+                    "action" : "CREATE"
+                },
+                {
+                    "situation" : "FOUND",
+                    "action" : "LINK"
+                }
+            ]
+        }
+    ]
+}

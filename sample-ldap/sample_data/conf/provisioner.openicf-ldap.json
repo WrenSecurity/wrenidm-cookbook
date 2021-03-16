@@ -1,0 +1,155 @@
+{
+    "name" : "openldap",
+    "enabled" : true,
+    "connectorRef" : {
+        "bundleName" : "org.forgerock.openicf.connectors.ldap-connector",
+        "bundleVersion" : "[1.4.0.0,2.0.0.0)",
+        "connectorName" : "org.identityconnectors.ldap.LdapConnector"
+    },
+    "configurationProperties" : {
+        "host" : "openldap",
+        "port" : 389,
+        "ssl" : false,
+        "principal" : "cn=admin,dc=wrensecurity,dc=org",
+        "credentials" : "admin",
+        "baseContexts" : [
+            "DC=wrensecurity,DC=org"
+        ],
+        "baseContextsToSynchronize" : [
+            "DC=wrensecurity,DC=org"
+        ],
+        "objectClassesToSynchronize" : [
+            "person"
+        ],
+        "vlvSortAttribute" : "accountName",
+        "uidAttribute" : "dn",
+        "passwordAttribute" : "unicodePwd",
+        "useBlocks" : false,
+        "readSchema" : false,
+        "accountObjectClasses" : [
+            "person",
+            "top"
+        ],
+        "groupObjectClasses" : [
+            "group"
+        ],
+        "accountUserNameAttributes" : [
+            "accountName"
+        ],
+        "groupMemberAttribute" : "member",
+        "passwordHashAlgorithm" : null,
+        "usePagedResultControl" : true,
+        "getGroupMemberId" : true
+    },
+    "resultsHandlerConfig" : {
+        "enableFilteredResultsHandler" : false
+    },
+    "syncFailureHandler" : {
+        "maxRetries" : 5,
+        "postRetryAction" : "logged-ignore"
+    },
+    "objectTypes" : {
+        "account" : {
+            "$schema" : "http://json-schema.org/draft-03/schema",
+            "id" : "__ACCOUNT__",
+            "type" : "object",
+            "nativeType" : "__ACCOUNT__",
+            "properties" : {
+                "dn" : {
+                    "type" : "string",
+                    "nativeName": "__NAME__",
+                    "required" : true
+                },
+                "cn" : {
+                    "type" : "string",
+                    "flags" : [
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "accountName" : {
+                    "type" : "string"
+                },
+                "userPrincipalName" : {
+                    "type" : "string"
+                },
+                "userAccountControl" : {
+                    "type" : "string"
+                },
+                "givenName" : {
+                    "type" : "string"
+                },
+                "sn" : {
+                    "type" : "string"
+                },
+                "displayName" : {
+                    "type" : "string"
+                },
+                "description" : {
+                    "type" : "string"
+                },
+                "physicalDeliveryOfficeName" : {
+                    "type" : "string"
+                },
+                "mail" : {
+                    "type" : "string"
+                },
+                "title" : {
+                    "type" : "string"
+                },
+                "company" : {
+                    "type" : "string"
+                },
+                "departmentNumber" : {
+                    "type" : "string"
+                },
+                "employeeNumber" : {
+                    "type" : "string"
+                },
+                "employeeType" : {
+                    "type" : "string"
+                },
+                "displayNamePrintable" : {
+                    "type" : "string"
+                },
+                "ldapGroups" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "string",
+                        "nativeType" : "string"
+                    },
+                    "nativeType" : "string"
+                },
+                "password" : {
+                    "type" : "string",
+                    "nativeName" : "__PASSWORD__",
+                    "nativeType" : "JAVA_TYPE_GUARDEDSTRING",
+                    "flags" : [
+                        "NOT_READABLE",
+                        "NOT_RETURNED_BY_DEFAULT"
+                    ]
+                },
+                "pwdLastSet" : {
+                    "type" : "string",
+                    "flags" : [
+                        "NOT_CREATABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                }
+            }
+        }
+    },
+    "operationOptions" : {
+        "CREATE": {
+            "denied" : false,
+            "supportedObjectTypes": [ "__ACCOUNT__" ]
+        },
+        "UPDATE": {
+            "denied" : false,
+            "supportedObjectTypes": [ "__ACCOUNT__" ]
+        },
+        "DELETE": {
+            "denied" : false,
+            "supportedObjectTypes": [ "__ACCOUNT__" ]
+        }
+    }
+}

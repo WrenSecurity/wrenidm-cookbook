@@ -1,0 +1,32 @@
+version: "3.4"
+services:
+
+  wrenidm:
+    build: .
+    container_name: wrenidm
+    depends_on:
+      - openldap
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - ./idm-database:/wrenidm/db/openidm
+
+  openldap:
+    image: osixia/openldap:1.5.0
+    container_name: openldap
+    command: --loglevel debug
+    ports:
+      - "389:389"
+      - "636:636"
+
+    environment:
+      LDAP_ORGANISATION: "Wren Security"
+      LDAP_DOMAIN: "wrensecurity.org"
+
+    volumes:
+      - ./slapd.d:/etc/ldap/slapd.d
+      - ./ldap:/var/lib/ldap
+
+
+
