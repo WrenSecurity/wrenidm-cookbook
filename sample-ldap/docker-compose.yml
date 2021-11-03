@@ -2,7 +2,7 @@ version: "3.4"
 services:
 
   wrenidm:
-    build: .
+    image: wrensecurity/wrenidm:6.0.1
     container_name: wrenidm
     depends_on:
       - openldap
@@ -10,7 +10,8 @@ services:
       - "8080:8080"
       - "8443:8443"
     volumes:
-      - ./idm-database:/wrenidm/db/openidm
+      - ./sample_data/conf/provisioner.openicf-ldap.json:/opt/wrenidm/conf/provisioner.openicf-ldap.json
+      - ./sample_data/conf/sync.json:/opt/wrenidm/conf/sync.json
 
   openldap:
     image: osixia/openldap:1.5.0
@@ -23,10 +24,4 @@ services:
     environment:
       LDAP_ORGANISATION: "Wren Security"
       LDAP_DOMAIN: "wrensecurity.org"
-
-    volumes:
-      - ./slapd.d:/etc/ldap/slapd.d
-      - ./ldap:/var/lib/ldap
-
-
 

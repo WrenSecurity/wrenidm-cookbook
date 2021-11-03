@@ -23,7 +23,7 @@
         ],
         "vlvSortAttribute" : "accountName",
         "uidAttribute" : "dn",
-        "passwordAttribute" : "unicodePwd",
+        "passwordAttribute" : "password",
         "useBlocks" : false,
         "readSchema" : false,
         "accountObjectClasses" : [
@@ -57,7 +57,7 @@
             "properties" : {
                 "dn" : {
                     "type" : "string",
-                    "nativeName": "__NAME__",
+                    "nativeName" : "__NAME__",
                     "required" : true
                 },
                 "cn" : {
@@ -65,15 +65,6 @@
                     "flags" : [
                         "NOT_UPDATEABLE"
                     ]
-                },
-                "accountName" : {
-                    "type" : "string"
-                },
-                "userPrincipalName" : {
-                    "type" : "string"
-                },
-                "userAccountControl" : {
-                    "type" : "string"
                 },
                 "givenName" : {
                     "type" : "string"
@@ -87,28 +78,7 @@
                 "description" : {
                     "type" : "string"
                 },
-                "physicalDeliveryOfficeName" : {
-                    "type" : "string"
-                },
                 "mail" : {
-                    "type" : "string"
-                },
-                "title" : {
-                    "type" : "string"
-                },
-                "company" : {
-                    "type" : "string"
-                },
-                "departmentNumber" : {
-                    "type" : "string"
-                },
-                "employeeNumber" : {
-                    "type" : "string"
-                },
-                "employeeType" : {
-                    "type" : "string"
-                },
-                "displayNamePrintable" : {
                     "type" : "string"
                 },
                 "ldapGroups" : {
@@ -139,17 +109,23 @@
         }
     },
     "operationOptions" : {
-        "CREATE": {
+        "CREATE" : {
             "denied" : false,
-            "supportedObjectTypes": [ "__ACCOUNT__" ]
+            "supportedObjectTypes" : [
+                "__ACCOUNT__"
+            ]
         },
-        "UPDATE": {
+        "UPDATE" : {
             "denied" : false,
-            "supportedObjectTypes": [ "__ACCOUNT__" ]
+            "supportedObjectTypes" : [
+                "__ACCOUNT__"
+            ]
         },
-        "DELETE": {
+        "DELETE" : {
             "denied" : false,
-            "supportedObjectTypes": [ "__ACCOUNT__" ]
+            "supportedObjectTypes" : [
+                "__ACCOUNT__"
+            ]
         }
     }
 }

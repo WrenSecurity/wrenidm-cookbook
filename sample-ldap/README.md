@@ -1,31 +1,18 @@
 # Ldap synchronization example
 
-## Introduction
-
-The goal of this example is to familiarize you with the way Wren:idm reconciles identities with
-LDAP system.
-
-It comes with pre-made sample data and all the configuration you need to get you going with minimal effort.
-
-## Setup
-
-Make sure you have docker and docker-compose installed on your system.
-
+This usecase demonstrates synchronization of identities from Wren:IDM to LDAP.
 ## Running the example
 
-Make sure you are in directory with the `docker-compose.yaml` file
+cd into directory with `docker-compose.yaml` file
 and run:
 
 `docker-compose up`
 
-This starts both Wren:idm and OpenLDAP in their docker containers
-
-## I/O
-
+This starts both Wren:idm and OpenLDAP in their docker containers.
+Ports needed for communication will be forwarded to host as described below.
 ### Wren:IDM
 
 - accessible via HTTP at `localhost:8080`
-- database is mapped to `./idm-database`
 
 ### OpenLDAP
 
@@ -34,20 +21,48 @@ Root password: admin
 
 - accessible via HTTP at `localhost:389` (no TLS)
 - accessible via HTTP at `localhost:636` (with TLS)
-- ./slapd.d
-- ./ldap
 
-## Trying the usecase
+### Configuration files
 
-This usecase demonstrates synchronization of identities from Wren:idm to LDAP.
+To sync with LDAP, Wren:IDM needs LDAP connector configuration file and mapping file.
 
-Admin dashboard -> Manage -> User
+Those are provided in sample_data/conf folder:
 
-Check existing user accounts, optionally edit them or add more.
+- provisioner.openicf-ldap.json - (LDAP connector configuration file)
+- sync.json - (mapping file)
 
-Configure -> Mappings
+Those files are mounted into the Wren:IDM container as bind mounts.
+If you change them, Wren:IDM will notice and handle the change without restart.
 
-click Reconcile
+## Managing users using GUI
 
-All the users are now in LDAP.
+1. Go to admin user interface: `localhost:8080/admin`
 
+2. Navigate to user management: Manage -> User
+
+3. Create some users: click "New User" button and fill in required user data
+
+
+## Managing users using CLI
+
+1. Create a user using this command:
+
+----
+    curl \
+      -u openidm-admin:openidm-admin \
+      -XPUT \
+      -H "Content-Type: application/json" \
+      -d '{"_id":"someuser", "userName":"someuser", "givenName":"Sam", "sn":"User", "mail":"sam@user.com"}' \
+      "http://localhost:8080/openidm/managed/user/someuser"
+----
+
+## LDAP Checking
+
+Ldap connector runs in live-sync mode.
+This means that changes are propagated as soon as they happen without the need to trigger manual reconciliation.
+
+- To verify that users are present in LDAP, you can use this command:
+
+    ----
+        ldapsearch -H ldap://localhost:389 -x -D "cn=admin,dc=wrensecurity,dc=org" -w admin -b "dc=wrensecurity,dc=org" "(objectClass=*)"
+    ----
