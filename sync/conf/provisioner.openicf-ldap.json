@@ -1,5 +1,5 @@
 {
-    "name" : "openldap",
+    "name" : "ldap",
     "enabled" : true,
     "connectorRef" : {
         "bundleName" : "org.forgerock.openicf.connectors.ldap-connector",
@@ -7,42 +7,82 @@
         "connectorName" : "org.identityconnectors.ldap.LdapConnector"
     },
     "configurationProperties" : {
-        "host" : "openldap",
+        "host" : "ldap",
         "port" : 389,
         "ssl" : false,
         "principal" : "cn=admin,dc=wrensecurity,dc=org",
         "credentials" : "admin",
         "baseContexts" : [
-            "DC=wrensecurity,DC=org"
+            "dc=wrensecurity,dc=org"
         ],
         "baseContextsToSynchronize" : [
-            "DC=wrensecurity,DC=org"
+            "dc=wrensecurity,dc=org"
         ],
+        "accountSearchFilter" : null,
+        "accountSynchronizationFilter" : null,
+        "groupSearchFilter" : null,
+        "groupSynchronizationFilter" : null,
+        "passwordAttributeToSynchronize" : null,
+        "synchronizePasswords" : false,
+        "removeLogEntryObjectClassFromFilter" : true,
+        "modifiersNamesToFilterOut" : [ ],
+        "passwordDecryptionKey" : null,
+        "changeLogBlockSize" : 100,
+        "attributesToSynchronize" : [ ],
+        "changeNumberAttribute" : "changeNumber",
+        "passwordDecryptionInitializationVector" : null,
+        "filterWithOrInsteadOfAnd" : false,
         "objectClassesToSynchronize" : [
-            "person"
+            "inetOrgPerson"
         ],
-        "vlvSortAttribute" : "accountName",
-        "uidAttribute" : "dn",
-        "passwordAttribute" : "password",
+        "vlvSortAttribute" : "uid",
+        "passwordAttribute" : "userPassword",
         "useBlocks" : false,
-        "readSchema" : false,
+        "maintainPosixGroupMembership" : false,
+        "failover" : [ ],
+        "readSchema" : true,
         "accountObjectClasses" : [
+            "top",
             "person",
-            "top"
-        ],
-        "groupObjectClasses" : [
-            "group"
+            "organizationalPerson",
+            "inetOrgPerson"
         ],
         "accountUserNameAttributes" : [
-            "accountName"
+            "uid"
         ],
-        "groupMemberAttribute" : "member",
-        "passwordHashAlgorithm" : null,
+        "groupMemberAttribute" : "uniqueMember",
+        "passwordHashAlgorithm" : "SSHA",
         "usePagedResultControl" : true,
-        "getGroupMemberId" : true
+        "blockSize" : 100,
+        "maintainLdapGroupMembership" : false,
+        "respectResourcePasswordPolicyChangeAfterReset" : false
     },
     "resultsHandlerConfig" : {
-        "enableFilteredResultsHandler" : false
+        "enableNormalizingResultsHandler" : true,
+        "enableFilteredResultsHandler" : false,
+        "enableCaseInsensitiveFilter" : false,
+        "enableAttributesToGetSearchResultsHandler" : true
+    },
+    "poolConfigOption" : {
+        "maxObjects" : 10,
+        "maxIdle" : 10,
+        "maxWait" : 150000,
+        "minEvictableIdleTimeMillis" : 120000,
+        "minIdle" : 1
+    },
+    "operationTimeout" : {
+        "CREATE" : -1,
+        "VALIDATE" : -1,
+        "TEST" : -1,
+        "SCRIPT_ON_CONNECTOR" : -1,
+        "SCHEMA" : -1,
+        "DELETE" : -1,
+        "UPDATE" : -1,
+        "SYNC" : -1,
+        "AUTHENTICATE" : -1,
+        "GET" : -1,
+        "SCRIPT_ON_RESOURCE" : -1,
+        "SEARCH" : -1
     },
     "syncFailureHandler" : {
         "maxRetries" : 5,
@@ -61,48 +101,30 @@
                     "required" : true
                 },
                 "cn" : {
-                    "type" : "string",
-                    "flags" : [
-                        "NOT_UPDATEABLE"
-                    ]
-                },
-                "givenName" : {
                     "type" : "string"
                 },
                 "sn" : {
                     "type" : "string"
                 },
-                "displayName" : {
+                "uid" : {
                     "type" : "string"
                 },
-                "description" : {
+                "givenName" : {
+                    "type" : "string"
+                },
+                "telephoneNumber" : {
                     "type" : "string"
                 },
                 "mail" : {
                     "type" : "string"
                 },
-                "ldapGroups" : {
-                    "type" : "array",
-                    "items" : {
-                        "type" : "string",
-                        "nativeType" : "string"
-                    },
-                    "nativeType" : "string"
-                },
-                "password" : {
+                "userPassword" : {
                     "type" : "string",
                     "nativeName" : "__PASSWORD__",
                     "nativeType" : "JAVA_TYPE_GUARDEDSTRING",
                     "flags" : [
                         "NOT_READABLE",
                         "NOT_RETURNED_BY_DEFAULT"
-                    ]
-                },
-                "pwdLastSet" : {
-                    "type" : "string",
-                    "flags" : [
-                        "NOT_CREATABLE",
-                        "NOT_UPDATEABLE"
                     ]
                 }
             }
