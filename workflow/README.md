@@ -124,33 +124,33 @@ There are two options how to process created requests:
 
 1. List active approval tasks using:
 
-```bash
-curl -k \
-  -u openidm-admin:openidm-admin \
-  "https://localhost:8443/openidm/workflow/taskinstance?_queryId=query-all-ids&_prettyPrint=true"
-```
+    ```bash
+    curl -k \
+      -u openidm-admin:openidm-admin \
+      "https://localhost:8443/openidm/workflow/taskinstance?_queryId=query-all-ids&_prettyPrint=true"
+    ```
 
-Copy identifier of any approval task (attribute `_id`).
+    Copy identifier of any approval task (attribute `_id`).
 
 2. Approve approval task using:
 
-```bash
-curl -k \
-  -H "Content-type: application/json" \
-  -u openidm-admin:openidm-admin \
-  -XPOST --data '{"result":"approve"}' \
-  "https://localhost:8443/openidm/workflow/taskinstance/{TASK_ID}?_action=complete"
-```
+    ```bash
+    curl -k \
+      -H "Content-type: application/json" \
+      -u openidm-admin:openidm-admin \
+      -XPOST --data '{"result":"approve"}' \
+      "https://localhost:8443/openidm/workflow/taskinstance/{TASK_ID}?_action=complete"
+    ```
 
-Approval task can be rejected using result value _reject_.
+    Approval task can be rejected using result value _reject_.
 
 3. Check created user using:
 
-```bash
-curl -k \
-  -u openidm-admin:openidm-admin \
-  "https://localhost:8443/openidm/managed/user?_queryFilter=true&_prettyPrint=true"
-```
+    ```bash
+    curl -k \
+      -u openidm-admin:openidm-admin \
+      "https://localhost:8443/openidm/managed/user?_queryFilter=true&_prettyPrint=true"
+    ```
 
 
 ## Cleanup
