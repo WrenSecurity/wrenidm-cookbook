@@ -58,9 +58,9 @@ Perform reconciliation of employees from the source CSV file using:
 
 ```bash
 curl -k \
-    -u openidm-admin:openidm-admin \
-    -XPOST \
-    "https://localhost:8443/openidm/recon?_action=recon&mapping=csvEmployee_managedUser"
+  -u openidm-admin:openidm-admin \
+  -XPOST \
+  "https://localhost:8443/openidm/recon?_action=recon&mapping=csvEmployee_managedUser"
 ```
 
 
@@ -80,22 +80,16 @@ curl -k \
 The default sample configuration has enabled implicit synchronization for LDAP account mapping.
 This means that changes are propagated as soon as they happen in Wren:IDM without the need to trigger manual reconciliation.
 
-1. Connect to the LDAP Docker container:
+1. List existing LDAP accounts:
 
 ```bash
-docker exec -it ldap bash
+docker exec ldap ldapsearch -H ldap://localhost -x -D "cn=admin,dc=wrensecurity,dc=org" -w admin -b "dc=wrensecurity,dc=org" "(objectClass=inetOrgPerson)"
 ```
 
-2. List existing LDAP accounts:
+2. Try LDAP bind using *Jon Snow* account:
 
 ```bash
-ldapsearch -H ldap://localhost -x -D "cn=admin,dc=wrensecurity,dc=org" -w admin -b "dc=wrensecurity,dc=org" "(objectClass=inetOrgPerson)"
-```
-
-3. Try LDAP bind using *Jon Snow* account:
-
-```bash
-ldapwhoami -H ldap://localhost -x -D "uid=snow123,dc=wrensecurity,dc=org" -w FooBar123
+docker exec ldap ldapwhoami -H ldap://localhost -x -D "uid=snow123,dc=wrensecurity,dc=org" -w FooBar123
 ```
 
 

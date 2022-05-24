@@ -82,9 +82,9 @@ Perform reconciliation of employees from the source CSV file using:
 
 ```bash
 curl -k \
-    -u openidm-admin:openidm-admin \
-    -XPOST \
-    "https://localhost:8443/openidm/recon?_action=recon&mapping=csvEmployee_managedUser"
+  -u openidm-admin:openidm-admin \
+  -XPOST \
+  "https://localhost:8443/openidm/recon?_action=recon&mapping=csvEmployee_managedUser"
 ```
 
 Reconciliation starts approval workflow for each user missing in Wren:IDM.
@@ -126,8 +126,8 @@ There are two options how to process created requests:
 
 ```bash
 curl -k \
-    -u openidm-admin:openidm-admin \
-    "https://localhost:8443/openidm/workflow/taskinstance?_queryId=query-all-ids&_prettyPrint=true"
+  -u openidm-admin:openidm-admin \
+  "https://localhost:8443/openidm/workflow/taskinstance?_queryId=query-all-ids&_prettyPrint=true"
 ```
 
 Copy identifier of any approval task (attribute `_id`).
@@ -136,10 +136,10 @@ Copy identifier of any approval task (attribute `_id`).
 
 ```bash
 curl -k \
-    -H "Content-type: application/json" \
-    -u openidm-admin:openidm-admin \
-    -XPOST --data '{"result":"approve"}' \
-    "https://localhost:8443/openidm/workflow/taskinstance/{TASK_ID}?_action=complete"
+  -H "Content-type: application/json" \
+  -u openidm-admin:openidm-admin \
+  -XPOST --data '{"result":"approve"}' \
+  "https://localhost:8443/openidm/workflow/taskinstance/{TASK_ID}?_action=complete"
 ```
 
 Approval task can be rejected using result value _reject_.
@@ -148,8 +148,8 @@ Approval task can be rejected using result value _reject_.
 
 ```bash
 curl -k \
-    -u openidm-admin:openidm-admin \
-    "https://localhost:8443/openidm/managed/user?_queryFilter=true&_prettyPrint=true"
+  -u openidm-admin:openidm-admin \
+  "https://localhost:8443/openidm/managed/user?_queryFilter=true&_prettyPrint=true"
 ```
 
 
