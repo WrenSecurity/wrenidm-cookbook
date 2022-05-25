@@ -1,10 +1,10 @@
 # Wren:IDM Cookbook
 
-Cookbook consist of few samples (recipes) demonstrating some of the Wren:IDM features.
+Cookbook consists of recipes (samples) demonstrating key Wren:IDM features.
 Environment for each sample is defined through Docker Compose file.
-So you don't have to do any kind of configuration, just execute single command to start relevant Docker containers.
+Execute single command to start relevant Docker containers, zero configuration needed.
 
-Samples are addressing these use-cases:
+The following samples are available:
 
   * sync – synchronize data between Wren:IDM and source / target systems
   * workflow – create workflow with approval in Wren:IDM
@@ -13,6 +13,7 @@ Samples are addressing these use-cases:
   * scheduler (TBD) – schedule script to be automatically triggered
   * email (TBD) – send email notification
   * audit (TBD) – explore audit logs
+  * deploy (TBD) – Wren:IDM container deployment
 
 More information can be found in README files in sample subfolders.
 
