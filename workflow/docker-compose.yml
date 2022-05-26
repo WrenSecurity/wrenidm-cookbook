@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  wrenidm:
+    image: wrensecurity/wrenidm:6.0.2
+    container_name: wrenidm
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - ./conf/provisioner.openicf-csv.json:/opt/wrenidm/conf/provisioner.openicf-csv.json
+      - ./conf/config.properties:/opt/wrenidm/conf/config.properties
+      - ./conf/system.properties:/opt/wrenidm/conf/system.properties
+      - ./conf/sync.json:/opt/wrenidm/conf/sync.json
+      - ./data/hr.csv:/tmp/hr.csv
+      - ./workflow/onboarding.bpmn20.xml:/opt/wrenidm/workflow/onboarding.bpmn20.xml

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+    <process id="onboarding" name="User Approval Workflow" isExecutable="true">
+        <!-- Start event -->
+        <startEvent id="start" name="start"></startEvent>
+        <!-- Sequence flow 1 from 'start' to 'readEmployee' -->
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="readEmployee"></sequenceFlow>
+         <!-- Read employee data -->
+        <scriptTask id="readEmployee" name="Read Employee Data" scriptFormat="groovy" activiti:autoStoreVariables="true">
+            <script>
+                employee = openidm.read("system/csv/employee/" + sourceId)
+            </script>
+        </scriptTask>
+        <!-- Sequence flow 2 from 'readEmployee' to 'approval' -->
+        <sequenceFlow id="flow2" sourceRef="readEmployee" targetRef="approval"></sequenceFlow>
+        <!-- Approval by administrator -->
+        <userTask id="approval" name="User Approval" activiti:assignee="openidm-admin">
+            <extensionElements>
+                <activiti:formProperty id="_id" name="Identifier" expression="${sourceId}" type="string" writable="false"></activiti:formProperty>
+                <activiti:formProperty id="givenName" name="Given Name" expression="${employee.firstName}" type="string" writable="false"></activiti:formProperty>
+                <activiti:formProperty id="sn" name="Surname" expression="${employee.lastName}" type="string" writable="false"></activiti:formProperty>
+                <activiti:formProperty id="telephoneNumber" name="Telephone Number" expression="${employee.telephoneNumber}" type="string" writable="false"></activiti:formProperty>
+                <activiti:formProperty id="result" name="Decision" type="enum" required="true">
+                    <activiti:value id="approve" name="Approve"></activiti:value>
+                    <activiti:value id="reject" name="Reject"></activiti:value>
+                </activiti:formProperty>
+                <activiti:taskListener event="complete" class="org.activiti.engine.impl.bpmn.listener.ScriptTaskListener">
+                    <activiti:field name="script">
+                        <activiti:string>result</activiti:string>
+                    </activiti:field>
+                    <activiti:field name="language" stringValue="groovy" />
+                    <activiti:field name="resultVariable" stringValue="decision" />
+                </activiti:taskListener>
+            </extensionElements>
+        </userTask>
+        <!-- Sequence flow 3 from 'approval' to 'approvalGw' -->
+        <sequenceFlow id="flow3" sourceRef="approval" targetRef="approvalGw"></sequenceFlow>
+        <!-- Gateway for approval result -->
+        <exclusiveGateway id="approvalGw" name="Approval Decision Gateway" />
+        <!-- Sequence flow 4 from 'approvalGw' to 'syncUser' when user creation was approved -->
+        <sequenceFlow id="flow4" sourceRef="approvalGw" targetRef="syncUser">
+            <conditionExpression xsi:type="tFormalExpression">${decision == 'approve'}</conditionExpression>
+        </sequenceFlow>
+        <!-- Sequence flow 5 from 'approvalGw' to 'end' when user creation was rejected -->
+        <sequenceFlow id="flow5" sourceRef="approvalGw" targetRef="end">
+            <conditionExpression xsi:type="tFormalExpression">${decision == 'reject'}</conditionExpression>
+        </sequenceFlow>
+        <!-- Sync approved user -->
+        <scriptTask id="syncUser" name="Sync User" scriptFormat="groovy">
+            <script>
+                def attrs = [
+                    "reconId": reconId,
+                    "mapping": mapping,
+                    "situation": situation,
+                    "action": action,
+                    "sourceId": sourceId
+                ]
+                openidm.action("sync", "performAction", [:], attrs)
+            </script>
+        </scriptTask>
+        <!-- Sequence flow 6 from 'syncUser' to 'end' -->
+        <sequenceFlow id="flow6" sourceRef="syncUser" targetRef="end"></sequenceFlow>
+        <!-- End event -->
+        <endEvent id="end" name="end"></endEvent>
+    </process>
+</definitions>
