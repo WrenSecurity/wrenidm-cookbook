@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  wrenidm:
+    image: wrensecurity/wrenidm:6.0.2
+    container_name: wrenidm
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - ./conf/provisioner.openicf-csv.json:/opt/wrenidm/conf/provisioner.openicf-csv.json
+      - ./conf/schedule-greeting.json:/opt/wrenidm/conf/schedule-greeting.json
+      - ./conf/schedule-recon.json:/opt/wrenidm/conf/schedule-recon.json
+      - ./conf/sync.json:/opt/wrenidm/conf/sync.json
+      - ./script/greeting.js:/opt/wrenidm/script/greeting.js
+      - ./data/hr.csv:/tmp/hr.csv
