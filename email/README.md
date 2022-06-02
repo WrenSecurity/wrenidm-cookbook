@@ -18,15 +18,15 @@ If you change them, Wren:IDM will notice and handle the change without restart.
 The sample works with the following docker containers:
 
   * wrenidm – container with Wren:IDM installation
-  * wrenidm-smtp – testing SMTP server
+  * smtp – testing SMTP server
 
 ```mermaid
 flowchart TD
     idmportsecure((8443))-.->wrenidm("#60;#60;container#62;#62;\nwrenidm")
     idmport((8080))-.->wrenidm
-    wrenidm-->|1025|wrenidm-smtp
-    smtpport((1025))-.->wrenidm-smtp("#60;#60;container#62;#62;\nwrenidm-smtp")
-    webuiport((8025))-.->wrenidm-smtp
+    wrenidm-->|1025|smtp
+    smtpport((1025))-.->smtp("#60;#60;container#62;#62;\nsmtp")
+    webuiport((8025))-.->smtp
 ```
 
 All needed Docker containers can be started through following commands:

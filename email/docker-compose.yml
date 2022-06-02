@@ -9,9 +9,9 @@ services:
       - "8443:8443"
     volumes:
       - ./conf/external.email.json:/opt/wrenidm/conf/external.email.json
-  wrenidm-smtp:
+  smtp:
     image: mailhog/mailhog
-    container_name: wrenidm-smtp
+    container_name: smtp
     ports:
       - 1025:1025
       - 8025:8025
