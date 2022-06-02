@@ -1,0 +1,5 @@
+{
+    "context" : "endpoint/greeting/*",
+    "type" : "text/javascript",
+    "file" : "handle-greeting.js"
+}

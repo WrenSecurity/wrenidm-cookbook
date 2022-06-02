@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  wrenidm:
+    image: wrensecurity/wrenidm:6.0.2
+    container_name: wrenidm
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - ./conf/external.email.json:/opt/wrenidm/conf/external.email.json
+  smtp:
+    image: mailhog/mailhog
+    container_name: smtp
+    ports:
+      - 1025:1025
+      - 8025:8025

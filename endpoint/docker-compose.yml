@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  wrenidm:
+    image: wrensecurity/wrenidm:6.0.2
+    container_name: wrenidm
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - ./conf/endpoint-greeting.json:/opt/wrenidm/conf/endpoint-greeting.json
+      - ./script/handle-greeting.js:/opt/wrenidm/script/handle-greeting.js

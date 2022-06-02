@@ -8,10 +8,10 @@ The following samples are available:
 
   * sync – synchronize data between Wren:IDM and source / target systems
   * workflow – create workflow with approval in Wren:IDM
-  * roles (TBD) – manage roles and assignment values
-  * endpoint (TBD) – create custom REST API endpoint to execute custom business logic
-  * scheduler (TBD) – schedule script to be automatically triggered
-  * email (TBD) – send email notification
+  * roles – manage roles and assignment values
+  * endpoint – create custom REST API endpoint to execute custom business logic
+  * scheduler – schedule synchronization or script to be automatically triggered
+  * email – send email notification
   * audit (TBD) – explore audit logs
   * deploy (TBD) – Wren:IDM container deployment
 
