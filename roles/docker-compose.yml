@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   wrenidm:
-    image: wrensecurity/wrenidm:6.0.2
+    image: wrensecurity/wrenidm:6.1.1
     container_name: wrenidm
     depends_on:
       - ldap
