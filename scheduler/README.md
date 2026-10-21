@@ -41,7 +41,7 @@ Docker container can be started through following commands:
 
 ```bash
 cd {GIT_REPOSITORIES}/wrenidm-cookbook/scheduler
-docker-compose up
+docker compose up
 ```
 
 
@@ -55,7 +55,7 @@ Greeting message is printed each 15 seconds.
 Example output:
 
 ```bash
-wrenidm    | OpenIDM version "6.0.2" (revision: aeb2e53) master
+wrenidm    | Wren:IDM version "7.2.0"
 wrenidm    | Timestamp: "2022-06-01T11:27:15.026Z" – Hi, this is automatically triggered script!
 wrenidm    | Timestamp: "2022-06-01T11:27:30.008Z" – Hi, this is automatically triggered script!
 wrenidm    | Timestamp: "2022-06-01T11:27:45.002Z" – Hi, this is automatically triggered script!
@@ -85,4 +85,4 @@ wrenidm    | Timestamp: "2022-06-01T11:27:45.002Z" – Hi, this is automatically
 
 ## Cleanup
 
-When you finish all your tests, remove Docker containers using `docker-compose rm -f`.
+When you finish all your tests, remove Docker containers using `docker compose rm -f`.

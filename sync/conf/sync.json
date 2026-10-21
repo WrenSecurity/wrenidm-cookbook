@@ -1,9 +1,9 @@
 {
     "mappings": [
         {
-            "name" : "csvEmployee_managedUser",
-            "source" : "system/csv/employee",
-            "target" : "managed/user",
+            "name": "csvEmployee_managedUser",
+            "source": "system/csv/employee",
+            "target": "managed/user",
             "properties": [
                 {
                     "source": "uid",
@@ -18,20 +18,20 @@
                     "target": "sn"
                 },
                 {
-                    "source" : "",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "source.lastName.toLowerCase() + source.uid;"
+                    "source": "",
+                    "transform": {
+                        "type": "text/javascript",
+                        "source": "source.lastName.toLowerCase() + source.uid;"
                     },
-                    "target" : "userName"
+                    "target": "userName"
                 },
                 {
-                    "source" : "",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "source.firstName.toLowerCase() + '.' + source.lastName.toLowerCase() + '@example.com';"
+                    "source": "",
+                    "transform": {
+                        "type": "text/javascript",
+                        "source": "source.firstName.toLowerCase() + '.' + source.lastName.toLowerCase() + '@example.com';"
                     },
-                    "target" : "mail"
+                    "target": "mail"
                 },
                 {
                     "source": "telephoneNumber",
@@ -39,23 +39,23 @@
                 },
                 {
                     "default": "FooBar123",
-                    "target" : "password"
+                    "target": "password"
                 }
             ]
         },
         {
-            "name" : "managedUser_ldapAccount",
-            "source" : "managed/user",
-            "target" : "system/ldap/account",
-            "enableSync" : true,
+            "name": "managedUser_ldapAccount",
+            "source": "managed/user",
+            "target": "system/ldap/account",
+            "enableSync": true,
             "properties": [
                 {
-                    "source" : "",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "'uid=' + source.userName + ',dc=wrensecurity,dc=org';"
+                    "source": "",
+                    "transform": {
+                        "type": "text/javascript",
+                        "source": "'uid=' + source.userName + ',dc=wrensecurity,dc=org';"
                     },
-                    "target" : "dn"
+                    "target": "dn"
                 },
                 {
                     "source": "userName",
@@ -83,7 +83,7 @@
                 },
                 {
                     "source": "password",
-                    "target" : "userPassword"
+                    "target": "userPassword"
                 }
             ]
         }

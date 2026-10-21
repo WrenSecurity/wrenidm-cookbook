@@ -1,16 +1,16 @@
-version: "3.8"
-
 services:
   wrenidm:
-    image: ${WRENIDM_IMAGE:-wrensecurity/wrenidm:6.1.1}
+    image: ${WRENIDM_IMAGE:-wrensecurity/wrenidm:7.2.0}
     container_name: wrenidm
     ports:
       - "8080:8080"
       - "8443:8443"
+    environment:
+      JAVA_OPTS: "-Dfelix.fileinstall.disableConfigSave=false"
     volumes:
       - ./conf/external.email.json:/opt/wrenidm/conf/external.email.json
   smtp:
-    image: mailhog/mailhog
+    image: axllent/mailpit:v1.31
     container_name: smtp
     ports:
       - 1025:1025

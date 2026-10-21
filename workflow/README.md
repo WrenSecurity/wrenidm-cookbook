@@ -69,7 +69,7 @@ All needed Docker containers can be started through following commands:
 
 ```bash
 cd {GIT_REPOSITORIES}/wrenidm-cookbook/workflow
-docker-compose up -d
+docker compose up -d
 ```
 
 
@@ -155,4 +155,4 @@ There are two options how to process created requests:
 
 ## Cleanup
 
-When you finish all your tests, remove Docker containers using `docker-compose stop && docker-compose rm -f`.
+When you finish all your tests, remove Docker containers using `docker compose stop && docker compose rm -f`.

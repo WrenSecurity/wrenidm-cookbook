@@ -33,7 +33,7 @@ All needed Docker containers can be started through following commands:
 
 ```bash
 cd {GIT_REPOSITORIES}/wrenidm-cookbook/email
-docker-compose up -d
+docker compose up -d
 ```
 
 
@@ -42,7 +42,7 @@ docker-compose up -d
 
 ### 1. Send Email Notification
 
-Send email notification through default Wren:IDM email endpoint using:
+Send email notification with both HTML and plain text variant through default Wren:IDM email endpoint using:
 
 ```bash
 curl -k \
@@ -52,9 +52,9 @@ curl -k \
   -d '{
     "from":"idm@wrensecurity.org",
     "to":"foobar@example.com",
-    "type":"text/plain",
     "subject":"Hello World",
-    "body":"Email notification sent from Wren:IDM."
+    "text":"Email notification sent from Wren:IDM.",
+    "html":"<p>Email notification sent from <b>Wren:IDM</b>.</p>"
   }' \
   "https://localhost:8443/openidm/external/email?_action=send"
 ```
@@ -62,11 +62,11 @@ curl -k \
 
 ### 2. Check Sent Email
 
-1. Go to MailHog user interface: `http://localhost:8025/`
+1. Go to Mailpit user interface: `http://localhost:8025/`
 
-2. Check received email with subject *Hello World*
+2. Check received email with subject *Hello World* (both *HTML* and *Text* tabs are available)
 
 
 ## Cleanup
 
-When you finish all your tests, remove Docker containers using `docker-compose stop && docker-compose rm -f`.
+When you finish all your tests, remove Docker containers using `docker compose stop && docker compose rm -f`.

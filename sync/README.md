@@ -46,7 +46,7 @@ All needed Docker containers can be started through following commands:
 
 ```bash
 cd {GIT_REPOSITORIES}/wrenidm-cookbook/sync
-docker-compose up -d
+docker compose up -d
 ```
 
 
@@ -83,16 +83,16 @@ This means that changes are propagated as soon as they happen in Wren:IDM withou
 1. List existing LDAP accounts:
 
     ```bash
-    docker exec ldap ldapsearch -H ldap://localhost -x -D "cn=admin,dc=wrensecurity,dc=org" -w admin -b "dc=wrensecurity,dc=org" "(objectClass=inetOrgPerson)"
+    docker exec ldap ldapsearch -h localhost -p 1389 -D "cn=Directory Manager" -w admin -b "dc=wrensecurity,dc=org" "(objectClass=inetOrgPerson)"
     ```
 
 2. Try LDAP bind using *Jon Snow* account:
 
     ```bash
-    docker exec ldap ldapwhoami -H ldap://localhost -x -D "uid=snow123,dc=wrensecurity,dc=org" -w FooBar123
+    docker exec ldap ldapsearch -h localhost -p 1389 -D "uid=snow123,dc=wrensecurity,dc=org" -w FooBar123 -E -b "" -s base "(objectClass=*)" 1.1
     ```
 
 
 ## Cleanup
 
-When you finish all your tests, remove Docker containers using `docker-compose stop && docker-compose rm -f`.
+When you finish all your tests, remove Docker containers using `docker compose stop && docker compose rm -f`.

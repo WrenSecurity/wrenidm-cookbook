@@ -1,53 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://flowable.org/bpmn20" exporter="Flowable Open Source Modeler" exporterVersion="6.8.0">
     <process id="onboarding" name="User Approval Workflow" isExecutable="true">
-        <!-- Start event -->
-        <startEvent id="start" name="start"></startEvent>
-        <!-- Sequence flow 1 from 'start' to 'readEmployee' -->
+        <startEvent id="start" name="start" flowable:formFieldValidation="true"></startEvent>
         <sequenceFlow id="flow1" sourceRef="start" targetRef="readEmployee"></sequenceFlow>
-         <!-- Read employee data -->
-        <scriptTask id="readEmployee" name="Read Employee Data" scriptFormat="groovy" activiti:autoStoreVariables="true">
-            <script>
+        <scriptTask id="readEmployee" name="Read Employee Data" scriptFormat="groovy" flowable:autoStoreVariables="true">
+            <script><![CDATA[
                 employee = openidm.read("system/csv/employee/" + sourceId)
-            </script>
+            ]]></script>
         </scriptTask>
-        <!-- Sequence flow 2 from 'readEmployee' to 'approval' -->
         <sequenceFlow id="flow2" sourceRef="readEmployee" targetRef="approval"></sequenceFlow>
-        <!-- Approval by administrator -->
-        <userTask id="approval" name="User Approval" activiti:assignee="openidm-admin">
+        <userTask id="approval" name="User Approval" flowable:assignee="openidm-admin" flowable:formFieldValidation="true">
             <extensionElements>
-                <activiti:formProperty id="_id" name="Identifier" expression="${sourceId}" type="string" writable="false"></activiti:formProperty>
-                <activiti:formProperty id="givenName" name="Given Name" expression="${employee.firstName}" type="string" writable="false"></activiti:formProperty>
-                <activiti:formProperty id="sn" name="Surname" expression="${employee.lastName}" type="string" writable="false"></activiti:formProperty>
-                <activiti:formProperty id="telephoneNumber" name="Telephone Number" expression="${employee.telephoneNumber}" type="string" writable="false"></activiti:formProperty>
-                <activiti:formProperty id="result" name="Decision" type="enum" required="true">
-                    <activiti:value id="approve" name="Approve"></activiti:value>
-                    <activiti:value id="reject" name="Reject"></activiti:value>
-                </activiti:formProperty>
-                <activiti:taskListener event="complete" class="org.activiti.engine.impl.bpmn.listener.ScriptTaskListener">
-                    <activiti:field name="script">
-                        <activiti:string>result</activiti:string>
-                    </activiti:field>
-                    <activiti:field name="language" stringValue="groovy" />
-                    <activiti:field name="resultVariable" stringValue="decision" />
-                </activiti:taskListener>
+                <flowable:formProperty id="_id" name="Identifier" type="string" expression="${sourceId}" writable="false"></flowable:formProperty>
+                <flowable:formProperty id="givenName" name="Given Name" type="string" expression="${employee.firstName}" writable="false"></flowable:formProperty>
+                <flowable:formProperty id="sn" name="Surname" type="string" expression="${employee.lastName}" writable="false"></flowable:formProperty>
+                <flowable:formProperty id="telephoneNumber" name="Telephone Number" type="string" expression="${employee.telephoneNumber}" writable="false"></flowable:formProperty>
+                <flowable:formProperty id="result" name="Decision" type="enum" required="true">
+                    <flowable:value id="approve" name="Approve"></flowable:value>
+                    <flowable:value id="reject" name="Reject"></flowable:value>
+                </flowable:formProperty>
+                <flowable:taskListener event="complete" class="org.flowable.engine.impl.bpmn.listener.ScriptTaskListener">
+                    <flowable:field name="script">
+                        <flowable:string><![CDATA[result]]></flowable:string>
+                    </flowable:field>
+                    <flowable:field name="language">
+                        <flowable:string><![CDATA[groovy]]></flowable:string>
+                    </flowable:field>
+                    <flowable:field name="resultVariable">
+                        <flowable:string><![CDATA[decision]]></flowable:string>
+                    </flowable:field>
+                </flowable:taskListener>
+                <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
             </extensionElements>
         </userTask>
-        <!-- Sequence flow 3 from 'approval' to 'approvalGw' -->
         <sequenceFlow id="flow3" sourceRef="approval" targetRef="approvalGw"></sequenceFlow>
-        <!-- Gateway for approval result -->
-        <exclusiveGateway id="approvalGw" name="Approval Decision Gateway" />
-        <!-- Sequence flow 4 from 'approvalGw' to 'syncUser' when user creation was approved -->
+        <exclusiveGateway id="approvalGw" name="Approval Decision Gateway"></exclusiveGateway>
         <sequenceFlow id="flow4" sourceRef="approvalGw" targetRef="syncUser">
-            <conditionExpression xsi:type="tFormalExpression">${decision == 'approve'}</conditionExpression>
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 'approve'}]]></conditionExpression>
         </sequenceFlow>
-        <!-- Sequence flow 5 from 'approvalGw' to 'end' when user creation was rejected -->
-        <sequenceFlow id="flow5" sourceRef="approvalGw" targetRef="end">
-            <conditionExpression xsi:type="tFormalExpression">${decision == 'reject'}</conditionExpression>
-        </sequenceFlow>
-        <!-- Sync approved user -->
-        <scriptTask id="syncUser" name="Sync User" scriptFormat="groovy">
-            <script>
+        <scriptTask id="syncUser" name="Sync User" scriptFormat="groovy" flowable:autoStoreVariables="false">
+            <script><![CDATA[
                 def attrs = [
                     "reconId": reconId,
                     "mapping": mapping,
@@ -56,11 +48,64 @@
                     "sourceId": sourceId
                 ]
                 openidm.action("sync", "performAction", [:], attrs)
-            </script>
+            ]]></script>
         </scriptTask>
-        <!-- Sequence flow 6 from 'syncUser' to 'end' -->
-        <sequenceFlow id="flow6" sourceRef="syncUser" targetRef="end"></sequenceFlow>
-        <!-- End event -->
         <endEvent id="end" name="end"></endEvent>
+        <sequenceFlow id="flow6" sourceRef="syncUser" targetRef="end"></sequenceFlow>
+        <sequenceFlow id="flow5" sourceRef="approvalGw" targetRef="end">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 'reject'}]]></conditionExpression>
+        </sequenceFlow>
     </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_onboarding">
+        <bpmndi:BPMNPlane bpmnElement="onboarding" id="BPMNPlane_onboarding">
+            <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+                <omgdc:Bounds height="30.0" width="30.0" x="15.0" y="94.5"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="readEmployee" id="BPMNShape_readEmployee">
+                <omgdc:Bounds height="60.0" width="100.0" x="95.0" y="79.5"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="approval" id="BPMNShape_approval">
+                <omgdc:Bounds height="60.0" width="100.0" x="245.0" y="79.5"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="approvalGw" id="BPMNShape_approvalGw">
+                <omgdc:Bounds height="40.0" width="40.0" x="395.0" y="89.5"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="syncUser" id="BPMNShape_syncUser">
+                <omgdc:Bounds height="60.0" width="100.0" x="510.0" y="24.5"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+                <omgdc:Bounds height="28.0" width="28.0" x="635.0" y="104.5"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="30.0">
+                <omgdi:waypoint x="44.94999861835542" y="109.5"></omgdi:waypoint>
+                <omgdi:waypoint x="94.99999999995788" y="109.5"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2" flowable:sourceDockerX="50.0" flowable:sourceDockerY="30.0" flowable:targetDockerX="50.0" flowable:targetDockerY="30.0">
+                <omgdi:waypoint x="194.95" y="109.5"></omgdi:waypoint>
+                <omgdi:waypoint x="245.0" y="109.5"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3" flowable:sourceDockerX="50.0" flowable:sourceDockerY="30.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+                <omgdi:waypoint x="344.9499999999898" y="109.5"></omgdi:waypoint>
+                <omgdi:waypoint x="395.0" y="109.5"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="50.0" flowable:targetDockerY="30.0">
+                <omgdi:waypoint x="434.91892523364487" y="109.5"></omgdi:waypoint>
+                <omgdi:waypoint x="447.0" y="109.5"></omgdi:waypoint>
+                <omgdi:waypoint x="447.0" y="54.5"></omgdi:waypoint>
+                <omgdi:waypoint x="510.0" y="54.5"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+                <omgdi:waypoint x="434.91892523364487" y="109.5"></omgdi:waypoint>
+                <omgdi:waypoint x="447.0" y="109.5"></omgdi:waypoint>
+                <omgdi:waypoint x="447.0" y="175.0"></omgdi:waypoint>
+                <omgdi:waypoint x="649.0" y="175.0"></omgdi:waypoint>
+                <omgdi:waypoint x="649.0" y="132.44995017138174"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6" flowable:sourceDockerX="50.0" flowable:sourceDockerY="30.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+                <omgdi:waypoint x="609.95" y="54.5"></omgdi:waypoint>
+                <omgdi:waypoint x="649.0" y="54.5"></omgdi:waypoint>
+                <omgdi:waypoint x="649.0" y="104.5"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
 </definitions>
