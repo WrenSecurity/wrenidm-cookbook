@@ -1,13 +1,13 @@
 {
-    "enabled" : true,
-    "type" : "cron",
-    "schedule" : "0/15 * * * * ?",
-    "concurrentExecution" : false,
-    "invokeService" : "script",
-    "invokeContext" : {
-        "script" : {
-            "type" : "text/javascript",
-            "file" : "script/greeting.js"
+    "enabled": true,
+    "type": "cron",
+    "schedule": "0/15 * * * * ?",
+    "concurrentExecution": false,
+    "invokeService": "script",
+    "invokeContext": {
+        "script": {
+            "type": "text/javascript",
+            "file": "script/greeting.js"
         }
     }
 }

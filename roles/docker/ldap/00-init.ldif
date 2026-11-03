@@ -1,15 +1,17 @@
 dn: ou=accounts,dc=wrensecurity,dc=org
+changetype: add
 ou: accounts
 objectClass: organizationalUnit
 objectClass: top
 
 dn: ou=groups,dc=wrensecurity,dc=org
+changetype: add
 ou: groups
 objectClass: organizationalUnit
 objectClass: top
 
 dn: cn=employees,ou=groups,dc=wrensecurity,dc=org
-member: cn=dummy
+changetype: add
 objectClass: groupOfNames
 objectClass: top
 cn: employees

@@ -1,18 +1,18 @@
 {
     "mappings": [
         {
-            "name" : "managedUser_ldapAccount",
-            "source" : "managed/user",
-            "target" : "system/ldap/account",
-            "enableSync" : true,
+            "name": "managedUser_ldapAccount",
+            "source": "managed/user",
+            "target": "system/ldap/account",
+            "enableSync": true,
             "properties": [
                 {
-                    "source" : "",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "'uid=' + source.userName + ',ou=accounts,dc=wrensecurity,dc=org';"
+                    "source": "",
+                    "transform": {
+                        "type": "text/javascript",
+                        "source": "'uid=' + source.userName + ',ou=accounts,dc=wrensecurity,dc=org';"
                     },
-                    "target" : "dn"
+                    "target": "dn"
                 },
                 {
                     "source": "userName",
@@ -36,7 +36,7 @@
                 },
                 {
                     "source": "password",
-                    "target" : "userPassword"
+                    "target": "userPassword"
                 }
             ]
         }

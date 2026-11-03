@@ -54,7 +54,7 @@ All needed Docker containers can be started through following commands:
 
 ```bash
 cd {GIT_REPOSITORIES}/wrenidm-cookbook/roles
-docker-compose up -d
+docker compose up -d
 ```
 
 
@@ -260,13 +260,13 @@ This means that changes are propagated as soon as they happen in Wren:IDM withou
 1. List existing LDAP accounts:
 
     ```bash
-    docker exec ldap ldapsearch -H ldap://localhost -x -D "cn=admin,dc=wrensecurity,dc=org" -w admin -b "ou=accounts,dc=wrensecurity,dc=org" "(objectClass=inetOrgPerson)"
+    docker exec ldap ldapsearch -h localhost -p 1389 -D "cn=Directory Manager" -w admin -b "ou=accounts,dc=wrensecurity,dc=org" "(objectClass=inetOrgPerson)"
     ```
 
 2. List existing LDAP groups:
 
     ```bash
-    docker exec ldap ldapsearch -H ldap://localhost -x -D "cn=admin,dc=wrensecurity,dc=org" -w admin -b "ou=groups,dc=wrensecurity,dc=org" "(objectClass=groupOfNames)"
+    docker exec ldap ldapsearch -h localhost -p 1389 -D "cn=Directory Manager" -w admin -b "ou=groups,dc=wrensecurity,dc=org" "(objectClass=groupOfNames)"
     ```
 
 First command returns LDAP accounts for previously created users.
@@ -326,7 +326,7 @@ Check assigned roles (attribute `effectiveRoles`) and assignments (attribute `ef
 1. List existing LDAP accounts:
 
     ```bash
-    docker exec ldap ldapsearch -H ldap://localhost -x -D "cn=admin,dc=wrensecurity,dc=org" -w admin -b "ou=accounts,dc=wrensecurity,dc=org" "(objectClass=inetOrgPerson)"
+    docker exec ldap ldapsearch -h localhost -p 1389 -D "cn=Directory Manager" -w admin -b "ou=accounts,dc=wrensecurity,dc=org" "(objectClass=inetOrgPerson)"
     ```
 
 Both accounts have set correct value for attribute `employeeType`.
@@ -334,7 +334,7 @@ Both accounts have set correct value for attribute `employeeType`.
 2. List existing LDAP groups:
 
     ```bash
-    docker exec ldap ldapsearch -H ldap://localhost -x -D "cn=admin,dc=wrensecurity,dc=org" -w admin -b "ou=groups,dc=wrensecurity,dc=org" "(objectClass=groupOfNames)"
+    docker exec ldap ldapsearch -h localhost -p 1389 -D "cn=Directory Manager" -w admin -b "ou=groups,dc=wrensecurity,dc=org" "(objectClass=groupOfNames)"
     ```
 
 Both accounts are members of *employees* group.
@@ -342,4 +342,4 @@ Both accounts are members of *employees* group.
 
 ## Cleanup
 
-When you finish all your tests, remove Docker containers using `docker-compose stop && docker-compose rm -f`.
+When you finish all your tests, remove Docker containers using `docker compose stop && docker compose rm -f`.

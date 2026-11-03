@@ -1,5 +1,5 @@
 {
-    "host" : "smtp",
-    "port" : "1025",
-    "debug" : false
+    "host": "smtp",
+    "port": "1025",
+    "debug": false
 }

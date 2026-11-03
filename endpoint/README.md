@@ -34,7 +34,7 @@ Docker container can be started through following commands:
 
 ```bash
 cd {GIT_REPOSITORIES}/wrenidm-cookbook/endpoint
-docker-compose up -d
+docker compose up -d
 ```
 
 
@@ -71,4 +71,4 @@ You will receive HTTP 200 response with 'Hello, Universe!' greeting.
 
 ## Cleanup
 
-When you finish all your tests, remove Docker containers using `docker-compose stop && docker-compose rm -f`.
+When you finish all your tests, remove Docker containers using `docker compose stop && docker compose rm -f`.

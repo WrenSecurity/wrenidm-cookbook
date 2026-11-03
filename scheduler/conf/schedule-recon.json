@@ -1,11 +1,11 @@
 {
-    "enabled" : true,
-    "type" : "cron",
-    "schedule" : "0/15 * * * * ?",
-    "concurrentExecution" : false,
-    "invokeService" : "sync",
-    "invokeContext" : {
-        "action" : "reconcile",
-        "mapping" : "csvEmployee_managedUser"
+    "enabled": true,
+    "type": "cron",
+    "schedule": "0/15 * * * * ?",
+    "concurrentExecution": false,
+    "invokeService": "sync",
+    "invokeContext": {
+        "action": "reconcile",
+        "mapping": "csvEmployee_managedUser"
     }
 }
